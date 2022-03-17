@@ -18,6 +18,7 @@ Advantages:
 - Three keys give the users a choice as per their requirement based upon speed and security.
 - It is ubiquitous. That is, being defined as a standard by US government; it is supported by most vendors. Most systems used today support AES.
 - No known crypt-analytical attack against AES has been found till date.
+
 Disadvantages:
 - Though it can be implemented in both hardware and software, it is complex to implement in software.
 - It uses very simple encryption operations and simple key schedule which makes it vulnerable to attack.
