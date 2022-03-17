@@ -1,0 +1,128 @@
+
+
+<LoginWindow>:
+    name: "login"
+
+    email: email
+    password: password
+
+    FloatLayout:
+
+        Label:
+            text: "AES Encryption 16KB 256 key size"
+            size_hint: 0.8, 0.2
+            pos_hint: {"x":0.1, "top":1}
+            font_size: (root.width**2 + root.height**2) / 16**4
+
+        Label:
+            text:"Plain Text "
+            font_size: (root.width**2 + root.height**2) / 16**4
+            pos_hint: {"x":-0.0, "top":0.79}
+            size_hint: 0.35, 0.15
+
+        TextInput:
+            id: email
+            font_size: (root.width**2 + root.height**2) / 14**4
+            multiline: False
+            pos_hint: {"x": 0.26 , "top":0.76}
+            size_hint: 0.7, 0.11
+
+        Label:
+            text:"Cipher Text: "
+            font_size: (root.width**2 + root.height**2) / 16**4
+            pos_hint: {"x":0.0, "top":0.62}
+            size_hint: 0.35, 0.15
+
+        TextInput:
+            id: password
+            font_size: (root.width**2 + root.height**2) / 14**4
+            multiline: False
+            password: True
+            pos_hint: {"x": 0.26, "top":0.60}
+            size_hint: 0.7, 0.11
+
+        Button:
+            pos_hint:{"x":0.2,"y":0.05}
+            size_hint: 0.6, 0.2
+            font_size: (root.width**2 + root.height**2) / 13**4
+            text: "Encrypt"
+            on_release:
+                root.manager.transition.direction = "up"
+                root.loginBtn()
+
+
+
+<MainWindow>:
+    n: n
+    email: email
+    created:created
+
+    FloatLayout:
+        Label:
+            id: n
+            pos_hint:{"x": 0.1, "top":0.9}
+            size_hint:0.8, 0.2
+            text: "Account Name: "
+
+        Label:
+            id: email
+            pos_hint:{"x": 0.1, "top":0.7}
+            size_hint:0.8, 0.2
+            text: "Email: "
+
+        Label:
+            id: created
+            pos_hint:{"x": 0.1, "top":0.5}
+            size_hint:0.8, 0.2
+            text: "Created: "
+
+        Button:
+            pos_hint:{"x":0.2, "y": 0.1}
+            size_hint:0.6,0.2
+            text: "Log Out"
+            on_release:
+                app.root.current = "login"
+                root.manager.transition.direction = "down"
+    
+# .kv file
+
+# Extension of ProgBar class in .kv file
+<ProgBar>:
+
+	orientation: 'vertical'
+	# Creating the background of the App
+	canvas:
+		Color:
+			rgb: .45, .28, .5
+		Rectangle:
+			pos: self.pos
+			size: self.size
+
+	# Providing label to the pg bar
+	Label:
+		text: '[size = 40px]Progress Bar 1 (at .25)'
+		color: .5, 0, .5, 1
+		markup: True
+
+	# Creating thepg bar of specific value
+	ProgressBar:
+		value: .25
+		min: 0
+		max: 1
+		pos_hint: {'x':.1}
+		size_hint_x: .8
+
+	# Providing label to the pg bar
+	Label:
+		text: '[size = 40px]Progress Bar 2 (at .55)'
+		color: .5, 0, .5, 1
+		markup: True
+
+	# Creating thepg bar of specific value
+	ProgressBar:
+		value: .55
+		min: 0
+		max: 1
+		pos_hint: {'x':.1}
+		size_hint_x: .8
+	
