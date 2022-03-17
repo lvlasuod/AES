@@ -38,6 +38,26 @@
             pos_hint: {"x": 0.26, "top":0.60}
             size_hint: 0.7, 0.11
 
+        CheckBox:
+            id:CheckBox
+            text: 'Specify Key: '
+            active: False
+            font_size: (root.width**2 + root.height**2) / 16**4
+            pos_hint: {"x":-0.1, "top":0.45}
+            size_hint: 0.35, 0.15
+
+        TextInput:
+            id: KeyInput
+            text: "Our default key"
+            disabled: not CheckBox.active
+            font_size: (root.width**2 + root.height**2) / 14**4
+            multiline: False
+            pos_hint: {"x": 0.26, "top":0.45}
+            size_hint: 0.7, 0.11
+
+
+
+
         Button:
             pos_hint:{"x":0.2,"y":0.05}
             size_hint: 0.6, 0.2
