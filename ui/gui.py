@@ -11,7 +11,7 @@ from kivy.uix.progressbar import ProgressBar
 # BoxLayout arranges children in a vertical or horizontal box. 
 # or help to put the children at the desired location. 
 from kivy.uix.boxlayout import BoxLayout
-  
+from aes.aes import AES
   
 # The class whose internal work is in  kv file
 class ProgBar(BoxLayout):
@@ -24,6 +24,8 @@ class LoginWindow(Screen):
     password = ObjectProperty(None)
 
     def loginBtn(self):
+        master_key = ""
+        aes = AES(master_key)
         """
         if db.validate(self.email.text, self.password.text):
             MainWindow.current = self.email.text

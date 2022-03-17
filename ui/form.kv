@@ -15,7 +15,7 @@
         Label:
             text:"Plain Text "
             font_size: (root.width**2 + root.height**2) / 16**4
-            pos_hint: {"x":-0.0, "top":0.79}
+            pos_hint: {"x":-0.1, "top":0.79}
             size_hint: 0.35, 0.15
 
         TextInput:
@@ -28,14 +28,13 @@
         Label:
             text:"Cipher Text: "
             font_size: (root.width**2 + root.height**2) / 16**4
-            pos_hint: {"x":0.0, "top":0.62}
+            pos_hint: {"x":-0.1, "top":0.62}
             size_hint: 0.35, 0.15
 
         TextInput:
             id: password
             font_size: (root.width**2 + root.height**2) / 14**4
             multiline: False
-            password: True
             pos_hint: {"x": 0.26, "top":0.60}
             size_hint: 0.7, 0.11
 
