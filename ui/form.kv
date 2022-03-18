@@ -1,8 +1,14 @@
 <LoginWindow>:
     name: "login"
-
     email: email
     password: password
+    canvas.before:
+        Color:
+            rgba: root.bg_color
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
 
     FloatLayout:
 
@@ -48,6 +54,7 @@
             size: 155, 45
             pos_hint: {'center': (0.12, 0.40)}
 
+
         TextInput:
             id: key_input
             text: root.default_key
@@ -71,7 +78,7 @@
     background_normal: ''
     canvas.before:
         Color:
-            rgba: (52/255, 152/255, 219/255,1.0)
+            rgba: (44/255, 62/255, 70/255,1.0)
         RoundedRectangle:
             size: self.size
             pos: self.pos

@@ -21,6 +21,8 @@ class ProgBar(BoxLayout):
 
 
 class LoginWindow(Screen):
+    bg_color = config.color_background_darker
+    bg_button = config.color_background_normal
     email = ObjectProperty(None)
     password = ObjectProperty(None)
     default_key = config.default_key
