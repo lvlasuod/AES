@@ -6,22 +6,25 @@ from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 # The ProgressBar widget is used to
 # visualize the progress of some task
-from kivy.uix.progressbar import ProgressBar 
-  
+from kivy.uix.progressbar import ProgressBar
+
 # BoxLayout arranges children in a vertical or horizontal box. 
 # or help to put the children at the desired location. 
 from kivy.uix.boxlayout import BoxLayout
 from aes.aes import AES
-  
+from config import config
+
+
 # The class whose internal work is in  kv file
 class ProgBar(BoxLayout):
     pass
 
 
-
 class LoginWindow(Screen):
     email = ObjectProperty(None)
     password = ObjectProperty(None)
+    default_key = config.default_key
+    random_key = ""
 
     def loginBtn(self):
         master_key = ""
@@ -43,6 +46,34 @@ class LoginWindow(Screen):
         self.email.text = ""
         self.password.text = ""
 
+    def key_checkbox_active(self, instance, value):
+        if value:
+            self.ids.key_input.text = ""
+        else:
+            self.ids.key_input.text = config.default_key
+
+    def switch(x):
+        return {
+            'Default': 1,
+            'User specified': 2,
+            'Random': 3,
+        }[x]
+
+    def spinner_clicked(self, value):
+
+        if value == "Default":
+            self.ids.key_input.disabled = True
+            self.ids.key_input.text = config.default_key
+        elif value == "User specified":
+            self.ids.key_input.disabled = False
+            self.ids.key_input.text =  ""
+        elif value == "Random":
+            self.ids.key_input.disabled = True
+            self.ids.key_input.text = config.random_key
+        else:
+            self.ids.key_input.disabled = False
+            self.ids.key_input.text = ""
+
 
 class MainWindow(Screen):
     n = ObjectProperty(None)
@@ -54,7 +85,7 @@ class MainWindow(Screen):
         sm.current = "login"
 
     def on_enter(self, *args):
-       """"
+        """"
         password, name, created = db.get_user(self.current)
         self.n.text = "Account Name: " + name
         self.email.text = "Email: " + self.current
@@ -68,15 +99,15 @@ class WindowManager(ScreenManager):
 
 def invalidLogin():
     pop = Popup(title='Invalid Login',
-                  content=Label(text='Invalid username or password.'),
-                  size_hint=(None, None), size=(400, 400))
+                content=Label(text='Invalid username or password.'),
+                size_hint=(None, None), size=(400, 400))
     pop.open()
 
 
 def invalidForm():
     pop = Popup(title='Invalid Form',
-                  content=Label(text='Please fill in all inputs with valid information.'),
-                  size_hint=(None, None), size=(400, 400))
+                content=Label(text='Please fill in all inputs with valid information.'),
+                size_hint=(None, None), size=(400, 400))
 
     pop.open()
 
@@ -85,8 +116,7 @@ kv = Builder.load_file("form.kv")
 
 sm = WindowManager()
 
-
-screens = [LoginWindow(name="login"),MainWindow(name="main")]
+screens = [LoginWindow(name="login"), MainWindow(name="main")]
 for screen in screens:
     sm.add_widget(screen)
 

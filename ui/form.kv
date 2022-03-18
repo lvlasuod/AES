@@ -38,27 +38,26 @@
             pos_hint: {"x": 0.26, "top":0.60}
             size_hint: 0.7, 0.11
 
-        CheckBox:
-            id:CheckBox
-            text: 'Specify Key: '
-            active: False
+        Spinner:
+            id: key_spinnerbox
+            text: 'Choose your key type: '
+            values: ["Default", "User specified", "Random"]
+            on_text: root.spinner_clicked(key_spinnerbox.text)
             font_size: (root.width**2 + root.height**2) / 16**4
-            pos_hint: {"x":-0.1, "top":0.45}
-            size_hint: 0.35, 0.15
+            size_hint: None, None
+            size: 155, 45
+            pos_hint: {'center': (0.12, 0.40)}
 
         TextInput:
-            id: KeyInput
-            text: "Our default key"
-            disabled: not CheckBox.active
+            id: key_input
+            text: root.default_key
+            disabled: True
             font_size: (root.width**2 + root.height**2) / 14**4
             multiline: False
             pos_hint: {"x": 0.26, "top":0.45}
             size_hint: 0.7, 0.11
 
-
-
-
-        Button:
+        RoundedButton:
             pos_hint:{"x":0.2,"y":0.05}
             size_hint: 0.6, 0.2
             font_size: (root.width**2 + root.height**2) / 13**4
@@ -67,7 +66,16 @@
                 root.manager.transition.direction = "up"
                 root.loginBtn()
 
-
+<RoundedButton@Button>
+    background_color: (0,0,0,0)
+    background_normal: ''
+    canvas.before:
+        Color:
+            rgba: (52/255, 152/255, 219/255,1.0)
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [70]
 
 <MainWindow>:
     n: n
