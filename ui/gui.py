@@ -46,19 +46,6 @@ class LoginWindow(Screen):
         self.email.text = ""
         self.password.text = ""
 
-    def key_checkbox_active(self, instance, value):
-        if value:
-            self.ids.key_input.text = ""
-        else:
-            self.ids.key_input.text = config.default_key
-
-    def switch(x):
-        return {
-            'Default': 1,
-            'User specified': 2,
-            'Random': 3,
-        }[x]
-
     def spinner_clicked(self, value):
 
         if value == "Default":
