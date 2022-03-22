@@ -31,13 +31,6 @@ class LoginWindow(Screen):
     def loginBtn(self):
         master_key = "hychgjuyvhjy"
         aes = AES(master_key)
-        print(AES.convertToMatrix(aes,self.email.text))
-        converted = AES.convertToMatrix(aes, self.email.text)
-        print(converted[0][0])
-        after = AES.use_s_box(aes,converted)
-        print(after)
-        invafter = AES.use_inv_s_box(aes,after)
-        print(invafter)
         """
         if db.validate(self.email.text, self.password.text):
             MainWindow.current = self.email.text
