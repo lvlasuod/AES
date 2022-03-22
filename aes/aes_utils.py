@@ -55,3 +55,7 @@ def add_round_key(s, k):
     for i in range(len(s)):
         for j in range(len(s)):
             s[i][j] ^= k[i][j]
+
+def convert_to_matrix(text):
+    """ Converts a 16-byte array into a 4x4 matrix.  """
+    return [list(text[i:i+4]) for i in range(0, len(text), 4)]
