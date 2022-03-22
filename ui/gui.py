@@ -32,9 +32,9 @@ class LoginWindow(Screen):
     cipher_text = ObjectProperty(None)
     default_key = config.default_key
     random_key = ""
-    
+
     def encryptBtn(self):
-        master_key = ""
+        master_key = "hychgjuyvhjy"
         #aes = AES(master_key)
         
         # check if plain text input is not empty otherwise show error to user
@@ -46,6 +46,7 @@ class LoginWindow(Screen):
              self.ids.cipher_text.text="encrypted"
              self.reset()
              #sm.current = "main"
+
         else:
             invalidForm()
        

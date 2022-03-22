@@ -40,20 +40,22 @@ inv_s_box = (
 
 def sub_bytes(s):
     for i in range(len(s)):
-        for j in range(len(s)):
-            s[i][j] = s_box[s[i][j]]
+        for j in range(4):
+            s[i][j] = chr(s_box[ord(s[i][j])])
+    return s
 
 
 def inv_sub_bytes(s):
     for i in range(len(s)):
-        for j in range(len(s)):
-            s[i][j] = inv_s_box[s[i][j]]
+        for j in range(4):
+            s[i][j] = chr(inv_s_box[ord(s[i][j])])
+    return s
 
 
 
 def add_round_key(s, k):
     for i in range(len(s)):
-        for j in range(len(s)):
+        for j in range(4):
             s[i][j] ^= k[i][j]
 
 def convert_to_matrix(text):
