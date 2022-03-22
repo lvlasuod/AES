@@ -1,10 +1,10 @@
 <LoginWindow>:
-    name: "login"
-    email: email
-    password: password
+    name: "encryption"
+    plain_text: plain_text
+    cipher_text: cipher_text
     canvas.before:
         Color:
-            rgba: root.bg_color
+            rgba: (0/255, 0/255, 0/255,1.0)
         Rectangle:
             pos: self.pos
             size: self.size
@@ -13,19 +13,19 @@
     FloatLayout:
 
         Label:
-            text: "AES Encryption 16KB 256 key size"
+            text: "Advanced Encryption Standard (16KB 256)"
             size_hint: 0.8, 0.2
             pos_hint: {"x":0.1, "top":1}
-            font_size: (root.width**2 + root.height**2) / 16**4
+            font_size: (root.width**2.1 + root.height**2.1) / 16**4
 
         Label:
             text:"Plain Text "
-            font_size: (root.width**2 + root.height**2) / 16**4
+            font_size: (root.width**2.02 + root.height**2.02) / 16**4
             pos_hint: {"x":-0.1, "top":0.79}
             size_hint: 0.35, 0.15
 
         TextInput:
-            id: email
+            id: plain_text
             font_size: (root.width**2 + root.height**2) / 14**4
             multiline: False
             pos_hint: {"x": 0.26 , "top":0.76}
@@ -33,12 +33,12 @@
 
         Label:
             text:"Cipher Text: "
-            font_size: (root.width**2 + root.height**2) / 16**4
+            font_size: (root.width**2.02 + root.height**2.02) / 16**4
             pos_hint: {"x":-0.1, "top":0.62}
             size_hint: 0.35, 0.15
 
         TextInput:
-            id: password
+            id: cipher_text
             font_size: (root.width**2 + root.height**2) / 14**4
             disabled: True
             multiline: False
@@ -72,14 +72,14 @@
             text: "Encrypt"
             on_release:
                 root.manager.transition.direction = "up"
-                root.loginBtn()
+                root.encryptBtn()
 
 <RoundedButton@Button>
     background_color: (0,0,0,0)
     background_normal: ''
     canvas.before:
         Color:
-            rgba: (44/255, 62/255, 70/255,1.0)
+            rgba: (204/255, 0/255, 0/255,1.0)
         RoundedRectangle:
             size: self.size
             pos: self.pos
@@ -87,7 +87,7 @@
 
 <MainWindow>:
     n: n
-    email: email
+    plain_text: plain_text
     created:created
 
     FloatLayout:
@@ -95,13 +95,13 @@
             id: n
             pos_hint:{"x": 0.1, "top":0.9}
             size_hint:0.8, 0.2
-            text: "Account Name: "
+            text: "AES Encryption 16KB 256 key size"
 
         Label:
-            id: email
+            id: plain_text
             pos_hint:{"x": 0.1, "top":0.7}
             size_hint:0.8, 0.2
-            text: "Email: "
+            text: "plain Text: "
 
         Label:
             id: created
@@ -114,7 +114,7 @@
             size_hint:0.6,0.2
             text: "Log Out"
             on_release:
-                app.root.current = "login"
+                app.root.current = "encryption"
                 root.manager.transition.direction = "down"
     
 # .kv file

@@ -11,6 +11,11 @@ from kivy.uix.progressbar import ProgressBar
 # BoxLayout arranges children in a vertical or horizontal box. 
 # or help to put the children at the desired location. 
 from kivy.uix.boxlayout import BoxLayout
+
+#remove these 2 lines 
+#import sys
+#sys.path.append("/Users/mp/Documents/python/AES/")
+
 from aes.aes import AES
 from config import config
 
@@ -23,30 +28,36 @@ class ProgBar(BoxLayout):
 class LoginWindow(Screen):
     bg_color = config.color_background_darker
     bg_button = config.color_background_normal
-    email = ObjectProperty(None)
-    password = ObjectProperty(None)
+    plain_text = ObjectProperty(None)
+    cipher_text = ObjectProperty(None)
     default_key = config.default_key
     random_key = ""
 
-    def loginBtn(self):
+    def encryptBtn(self):
         master_key = "hychgjuyvhjy"
-        aes = AES(master_key)
-        """
-        if db.validate(self.email.text, self.password.text):
-            MainWindow.current = self.email.text
-            self.reset()
-            sm.current = "main"
+        #aes = AES(master_key)
+        
+        # check if plain text input is not empty otherwise show error to user
+        if(self.plain_text.text != ""):
+            # TODO do the Encryption here
+             print(self.plain_text.text)
+
+             MainWindow.current=self.plain_text.text
+             self.ids.cipher_text.text="encrypted"
+             self.reset()
+             #sm.current = "main"
+
         else:
-            invalidLogin()
-            """
+            invalidForm()
+       
 
     def createBtn(self):
         self.reset()
         sm.current = "create"
 
     def reset(self):
-        self.email.text = ""
-        self.password.text = ""
+        self.plain_text.text = ""
+        #self.cipher_text.text = ""
 
     def spinner_clicked(self, value):
 
@@ -67,35 +78,33 @@ class LoginWindow(Screen):
 class MainWindow(Screen):
     n = ObjectProperty(None)
     created = ObjectProperty(None)
-    email = ObjectProperty(None)
+    plain_text = ObjectProperty(None)
     current = ""
 
     def logOut(self):
-        sm.current = "login"
+        sm.current = "encryption"
 
     def on_enter(self, *args):
-        """"
-        password, name, created = db.get_user(self.current)
-        self.n.text = "Account Name: " + name
-        self.email.text = "Email: " + self.current
-        self.created.text = "Created On: " + created
-        """
+        
+        self.plain_text.text = "Plain Text: " + self.current
+        
+        
 
 
 class WindowManager(ScreenManager):
     pass
 
 
-def invalidLogin():
-    pop = Popup(title='Invalid Login',
-                content=Label(text='Invalid username or password.'),
+def invalidInputs():
+    pop = Popup(title='Invalid Input',
+                content=Label(text='Invalid input or blank plain text.'),
                 size_hint=(None, None), size=(400, 400))
     pop.open()
 
 
 def invalidForm():
     pop = Popup(title='Invalid Form',
-                content=Label(text='Please fill in all inputs with valid information.'),
+                content=Label(text='Please fill in plain text.'),
                 size_hint=(None, None), size=(400, 400))
 
     pop.open()
@@ -105,11 +114,11 @@ kv = Builder.load_file("form.kv")
 
 sm = WindowManager()
 
-screens = [LoginWindow(name="login"), MainWindow(name="main")]
+screens = [LoginWindow(name="encryption"), MainWindow(name="main")]
 for screen in screens:
     sm.add_widget(screen)
 
-sm.current = "login"
+sm.current = "encryption"
 
 
 class MyMainApp(App):
