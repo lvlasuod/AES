@@ -21,6 +21,9 @@ from config import config
 
 
 # The class whose internal work is in  kv file
+from config.config import default_key
+
+
 class ProgBar(BoxLayout):
     pass
 
@@ -34,24 +37,49 @@ class LoginWindow(Screen):
     random_key = ""
 
     def encryptBtn(self):
-        master_key = "hychgjuyvhjy"
+        master_key = default_key
         aes = AES(master_key)
         
         # check if plain text input is not empty otherwise show error to user
         if(self.plain_text.text != ""):
-            # TODO do the Encryption here
-            testEnctiption = aes.encrypt(self.plain_text.text)
-            MainWindow.current=self.plain_text.text
-            #self.ids.cipher_text.text="encrypted"
-            self.ids.cipher_text.text = testEnctiption
+            if(self.ids.encrypt_decrypt_button.text =="Encrypt"):
+                # TODO do the Encryption here
 
-            print(aes.decrypt(testEnctiption))
-            self.reset()
-            #sm.current = "main"
+                testEnctiption = aes.encrypt(self.plain_text.text)
 
+                MainWindow.current=self.plain_text.text
+
+                self.ids.cipher_text.text = testEnctiption
+                self.reset()
+                #sm.current = "main"
+            else:
+                # TODO do the Decryption here
+                testDecription = aes.decrypt(self.plain_text.text)
+
+                MainWindow.current = self.plain_text.text
+
+                self.ids.cipher_text.text = testDecription
+
+                self.reset()
+                # sm.current = "main"
         else:
             invalidForm()
-       
+
+    def changeBtn(self):
+
+        if(self.ids.change_button.text =="Change to decrypt"):
+            self.ids.change_button.text = "Change to encrypt"
+            self.ids.encrypt_decrypt_button.text = "Decrypt"
+            temp = self.ids.label_text_1.text
+            self.ids.label_text_1.text = self.ids.label_text_2.text
+            self.ids.label_text_2.text = temp
+        else:
+            self.ids.change_button.text = "Change to decrypt"
+            self.ids.encrypt_decrypt_button.text = "Encrypt"
+            temp = self.ids.label_text_1.text
+            self.ids.label_text_1.text = self.ids.label_text_2.text
+            self.ids.label_text_2.text = temp
+
 
     def createBtn(self):
         self.reset()
