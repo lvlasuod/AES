@@ -35,17 +35,19 @@ class LoginWindow(Screen):
 
     def encryptBtn(self):
         master_key = "hychgjuyvhjy"
-        #aes = AES(master_key)
+        aes = AES(master_key)
         
         # check if plain text input is not empty otherwise show error to user
         if(self.plain_text.text != ""):
             # TODO do the Encryption here
-             print(self.plain_text.text)
+            testEnctiption = aes.encrypt(self.plain_text.text)
+            MainWindow.current=self.plain_text.text
+            #self.ids.cipher_text.text="encrypted"
+            self.ids.cipher_text.text = testEnctiption
 
-             MainWindow.current=self.plain_text.text
-             self.ids.cipher_text.text="encrypted"
-             self.reset()
-             #sm.current = "main"
+            print(aes.decrypt(testEnctiption))
+            self.reset()
+            #sm.current = "main"
 
         else:
             invalidForm()
