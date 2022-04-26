@@ -1,29 +1,28 @@
 from aes.aes_utils import *
 import numpy as np
 
-
 class AES:
+    rounds_by_key_size = {16: 10, 24: 12, 32: 14}
 
     def __init__(self, master_key, rounds=10):
-        self.master_key = master_key
+        # assert len(master_key) in AES.rounds_by_key_size
         self.rounds = rounds
+        # self._key_matrices = self._expand_key(master_key)
 
     def encrypt(self, s):
 
-        s = self.convertToMatrix(s.encode("utf-8").hex())
-        #s = self.add_key(s)
+        s = self.convertToMatrix(s)
+
         # TODO  add key
 
         for i in range(1, self.rounds):
             self.use_s_box(s)
             # TODO  shift rows
             # TODO  mix columns
-            #s = self.add_key(s)
             # TODO  add key
 
         self.use_s_box(s)
         # TODO shift rows
-        #s = self.add_key(s)
         # TODO add key
 
         s = self.convertToText(s)
@@ -34,7 +33,6 @@ class AES:
         s = self.convertToMatrix(s)
 
         # TODO  add key
-        #s = self.add_key(s)
         # TODO  inv shift rows
         self.use_inv_s_box(s)
 
@@ -45,7 +43,6 @@ class AES:
             self.use_inv_s_box(s)
 
         # TODO add key
-        #s = self.add_key(s)
 
         s = self.convertToText(s)
         return s
@@ -54,9 +51,6 @@ class AES:
         """ Converts an array into a matrix.  """
         return [list(text[i:i + 4]) for i in range(0, len(text), 4)]
 
-    def keyToMatrix(self, text):
-        """ Converts an array into a matrix.  """
-        return [list(text[i + 4:i]) for i in range(0, len(text), 4)]
     def convertToText(self, s):
         """ Converts an array into a matrix.  """
         text = ""

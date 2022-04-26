@@ -80,6 +80,7 @@ class LoginWindow(Screen):
                 self.ids.cipher_text.text = testEnctiption
 
                 self.reset()
+                print(testEnctiption);
                 #sm.current = "main"
             else:
                 # TODO do the Decryption here
@@ -90,6 +91,7 @@ class LoginWindow(Screen):
                 self.ids.cipher_text.text = testDecription
 
                 self.reset()
+                print(testDecription);
                 # sm.current = "main"
         else:
             invalidForm()
