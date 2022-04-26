@@ -64,6 +64,7 @@ class LoginWindow(Screen):
 
     def encryptBtn(self):
         master_key = default_key
+
         aes = AES(self.get_user_key())
         # show progress bar
         #self.ids.progress_bar.value = 0
