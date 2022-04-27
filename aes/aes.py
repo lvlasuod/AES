@@ -2,6 +2,7 @@ from aes.aes_utils import *
 import numpy as np
 
 
+A =np.array([[2, 3, 1, 1], [1, 2, 2, 3], [1, 1, 2, 3], [3, 1, 1, 2]])
 class AES:
     rounds_by_key_size = {16: 10, 24: 12, 32: 14}
 
@@ -14,9 +15,10 @@ class AES:
     def encrypt(self, s):
 
         s = self.convertToMatrix(s)
-        print(self.master_key)
+        #print(self.master_key)
         m = self.convertToMatrix(self.master_key)
-        print(m)
+        print(self.m_column(s))
+        #print(m)
 
         # TODO  add key
 
@@ -46,6 +48,8 @@ class AES:
         # TODO  inv shift rows
         s = self.shift_right(s)
         s = self.use_inv_s_box(s)
+
+
 
         for i in range(1, self.rounds):
             # TODO  add key
@@ -123,6 +127,23 @@ class AES:
         for row in s[:-1]:
             new_rows.append(row)
         return new_rows
+
+    def to_Ascii(self, s):
+        new_rows = []
+        for i in range(len(s)):
+            s[i]=int(ord(s[i]))
+        for j in range(len(s)):
+            new_rows.append([int(s[j])])
+        return new_rows
+
+    def m_column(self,s):
+        # transposing
+        transposed = np.transpose(np.array(s))
+        # Changing values of transposed column to ascii
+        asc = np.array(self.to_Ascii(transposed[:, 0]))
+        print(f"ascii: {asc}")
+        return np.dot(A, asc)
+
 
     def add_key(self, s):
         print(self.master_key)
