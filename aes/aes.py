@@ -22,13 +22,14 @@ class AES:
         # TODO  add key
 
         for i in range(1, self.rounds):
+            print(f"Stage: {i}")
             s = self.use_s_box(s)
             print(f"after s_box: {s}")
             # TODO  shift rows
             s = self.shift_left(s)
             print(f"shifted: {s}")
             # TODO  mix columns
-            s = self.mix_column(s)
+            #s = self.mix_column(s)
             # TODO  add key
 
         s = self.use_s_box(s)
@@ -36,12 +37,12 @@ class AES:
         s = self.shift_left(s)
         # TODO add key
 
-        s = self.convertToText(s)
+        s = self.convertToText2(s)
         return s
 
     def decrypt(self, s):
 
-        s = self.convertToMatrix(s)
+        s = self.convertToMatrix2(s)
 
         # TODO  add key
         # TODO  inv shift rows
@@ -53,14 +54,14 @@ class AES:
         for i in range(1, self.rounds):
             # TODO  add key
             # TODO  inv mox columns
-            s = self.inv_mix_column(s)
+            #s = self.inv_mix_column(s)
             # TODO  inv shift rows
             s = self.shift_right(s)
             s = self.use_inv_s_box(s)
 
         # TODO add key
 
-        s = self.convertToText(s)
+        s = self.convertToText2(s)
         return s
 
     def convertToMatrix(self, text):
@@ -81,16 +82,29 @@ class AES:
                 text += s[i][j]
         return text
 
+    def convertToText2(self, s):
+        """ Converts an array into a matrix.  """
+        text = ""
+        arr = np.ravel(s, order='F')
+        for i in range(len(arr)):
+                text += arr[i]
+                #np.ravel(s, order='F')
+                #text += s[i][j]
+        return text
+
     def use_s_box(self, s):
         for i in range(len(s)):
             for j in range(4):
+                #print(int(s_box[ord(f"{s[i,j]}")]))
+                #print(ord("R"))
                 s[i,j] = chr(s_box[ord(s[i,j])])
-        return np.array(s)
+                #print(f"{s[i, j]} ord: {s_box[s[i, j]]}")
+        return s
 
     def use_inv_s_box(self, s):
         for i in range(len(s)):
             for j in range(4):
-                s[i][j] = chr(inv_s_box[ord(s[i][j])])
+                s[i,j] = chr(inv_s_box[ord(s[i,j])])
         return s
 
     def shift_right(self, s):
@@ -99,12 +113,13 @@ class AES:
         for row in s:
             if i > 0:
                 for j in range(i):
-                    row = row[-1:] + row[:len(row) - 1]
+                    #row = row[-1:] + row[:len(row) - 1]
+                    row = np.roll(row,i)
 
             new_rows.append(row)
             i += 1
         s = new_rows
-        return s
+        return np.array(s)
 
     def shift_left(self, s):
         new_rows = []
