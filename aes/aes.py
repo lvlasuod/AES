@@ -90,8 +90,6 @@ class AES:
                 text += arr[i]
                 #np.ravel(s, order='F')
                 #text += s[i][j]
-
-
         return text
 
     def use_s_box(self, s):
