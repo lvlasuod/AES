@@ -58,7 +58,7 @@
             pos_hint: {'center': (0.12, 0.40)}
 
 
-        TextInput:
+        MaxLengthInput:
             id: key_input
             text: root.default_key
             disabled: True
@@ -98,6 +98,8 @@
             size: self.size
             pos: self.pos
             radius: [70]
+
+
 
 <MainWindow>:
     n: n
