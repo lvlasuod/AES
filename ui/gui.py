@@ -65,7 +65,7 @@ class LoginWindow(Screen):
     def encryptBtn(self):
         master_key = default_key
 
-        aes = AES(self.get_user_key())
+        aes = AES(master_key)
         # show progress bar
         #self.ids.progress_bar.value = 0
         #self.ids.progress_bar.size_hint_y = 1
@@ -124,24 +124,25 @@ class LoginWindow(Screen):
 
         if value == "Default":
             self.ids.key_input.disabled = True
-            self.ids.key_input.text = config.default_key
+            self.ids.key_input.text = str(config.default_key)
         elif value == "User specified":
             self.ids.key_input.disabled = False
             self.ids.key_input.text =  ""
         elif value == "Random":
             self.ids.key_input.disabled = True
-            self.ids.key_input.text = config.random_key
+            self.ids.key_input.text = str(config.random_key)
         else:
             self.ids.key_input.disabled = False
             self.ids.key_input.text = ""
 
     def get_user_key(self):
-        return f"{self.ids.key_input.text}".encode("utf-8").hex()
+        #return f"{self.ids.key_input.text}".encode("utf-8").hex()
+        return self.ids.key_input.text
 
 
 class MaxLengthInput(TextInput):
     # A class that restricts the input of characters for the key_input field
-    max_length = 15  # 16 characters 0-15
+    max_length = 64  # 16 characters 0-15
 
     def insert_text(self, substring, from_undo=False):
         if len(self.text) <= self.max_length:
