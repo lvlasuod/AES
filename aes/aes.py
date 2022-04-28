@@ -5,22 +5,29 @@ xtime = lambda a: (((a << 1) ^ 0x1B) & 0xFF) if (a & 0x80) else (a << 1)
 A = np.array([[2, 3, 1, 1], [1, 2, 2, 3], [1, 1, 2, 3], [3, 1, 1, 2]])
 B = np.array([[14, 11, 13, 9], [9, 14, 11, 13], [13, 9, 14, 11], [11, 13, 9, 14]])
 
+Rcon = (
+    0x00, 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40,
+    0x80, 0x1B, 0x36, 0x6C, 0xD8, 0xAB, 0x4D, 0x9A,
+    0x2F, 0x5E, 0xBC, 0x63, 0xC6, 0x97, 0x35, 0x6A,
+    0xD4, 0xB3, 0x7D, 0xFA, 0xEF, 0xC5, 0x91, 0x39,
+)
 
 class AES:
-    rounds_by_key_size = {16: 10, 24: 12, 32: 14}
+    #rounds_by_key_size = {16: 10, 24: 12, 32: 14}
 
     def __init__(self, master_key, rounds=10):
         # assert len(master_key) in AES.rounds_by_key_size
-        self.master_key = master_key
+        self.master_key = self.change_key(master_key)
         self.rounds = rounds
         # self._key_matrices = self._expand_key(master_key)
 
     def encrypt(self, s):
         s = self.convertToMatrix2(s)
         print(s)
-        m = self.convertToMatrix2(self.master_key)
+        #m = self.convertToMatrix2(self.master_key)
         # print(m)
         # TODO  add key
+        self._add_round_key(s, self.master_key[:4])
 
         for i in range(1, self.rounds):
             print(f"Stage: {i}")
@@ -38,6 +45,7 @@ class AES:
         # TODO shift rows
         s = self.shift_left(s)
         # TODO add key
+        self._add_round_key(s, self.master_key[40:])
 
         s = self.convertToText2(s)
         return s
@@ -47,6 +55,7 @@ class AES:
         s = self.convertToMatrix2(s)
 
         # TODO  add key
+        self._add_round_key(s, self.master_key[40:])
         # TODO  inv shift rows
         s = self.shift_right(s)
         s = self.use_inv_s_box(s)
@@ -61,13 +70,23 @@ class AES:
             s = self.use_inv_s_box(s)
 
         # TODO add key
-
+        self._add_round_key(s, self.master_key[:4])
         s = self.convertToText2(s)
         return s
 
     def convertToMatrix(self, text):
         """ Converts an array into a matrix.  """
         return [list(text[i:i + 4]) for i in range(0, len(text), 4)]
+
+    def textToMatrix(self, text):
+        matrix = []
+        for i in range(16):
+            byte = (text >> (8 * (15 - i))) & 0xFF
+            if i % 4 == 0:
+                matrix.append([byte])
+            else:
+                matrix[i // 4].append(byte)
+        return matrix
 
     def convertToMatrix2(self, text):
         arr_1d = np.array(list(text))
@@ -114,7 +133,6 @@ class AES:
         for row in s:
             if i > 0:
                 for j in range(i):
-                    # row = row[-1:] + row[:len(row) - 1]
                     row = np.roll(row, i)
 
             new_rows.append(row)
@@ -129,7 +147,6 @@ class AES:
         for row in s:
             if i > 0:
                 for j in range(i):
-                    # row = row[1:] + row[:1]
                     row = np.roll(row, i * -1)
 
             new_rows.append(row)
@@ -242,14 +259,39 @@ class AES:
         print(final)
         return np.array(final)
 
-    def add_key(self, s):
-        print(self.master_key)
-        arr = np.reshape(self.master_key, (4, -1))
-        print(arr)
-        # arr = np.asmatrix(arr)
-        # print(np.asmatrix(arr))
-        # s =np.asmatrix(s)
+    def change_key(self, master_key):
+        print(master_key)
+        round_keys = self.textToMatrix(master_key)
+
+        for i in range(4, 4 * 11):
+            round_keys.append([])
+            if i % 4 == 0:
+                byte = round_keys[i - 4][0] \
+                       ^ s_box[round_keys[i - 1][1]] \
+                       ^ Rcon[i // 4]
+                round_keys[i].append(byte)
+
+                for j in range(1, 4):
+                    byte = round_keys[i - 4][j] \
+                           ^ s_box[round_keys[i - 1][(j + 1) % 4]]
+                    round_keys[i].append(byte)
+            else:
+                for j in range(4):
+                    byte = round_keys[i - 4][j] \
+                           ^ round_keys[i - 1][j]
+                    round_keys[i].append(byte)
+        return round_keys
+
+    def _add_round_key(self, s, k):
         print(s)
-        o = np.dot(s, arr)
-        print(o)
-        return o
+        print(k)
+        s = np.transpose(self.Array_To_Ascii(s))
+        print(s)
+        k = np.array(k)
+        print(k)
+        for i in range(len(s)):
+            for j in range(4):
+                s[i,j] ^= k[i,j]
+        s = self.Array_To_Letters(s)
+        print(s)
+
